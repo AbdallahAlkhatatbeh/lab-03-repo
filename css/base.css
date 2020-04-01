@@ -1,0 +1,33 @@
+#gallery{
+    display: none;
+    border: 10px solid yellow;
+    margin: 15px;
+    background-color: teal;
+  }
+  
+  img {
+    height: 200px;
+  }
+  div {
+    float: left;
+    margin: 86px;
+    border: 100px solid yellow;
+    background-color: teal;
+
+  }
+  header{
+      text-align: center;
+      margin-bottom: 5px;
+      background-color: tomato;
+      color: #000;
+      font-size: xx-large;
+      height: 80px;
+      line-height: 80px;
+  }
+  nav{
+      text-align: center;
+      margin: 10px;
+  }
+  main{
+      background-color: violet;
+  }
