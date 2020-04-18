@@ -1,89 +1,146 @@
-"use strict";
-$(document).ready(function() {
-    function Gallery(img) {
-      this.title = img.title;
-      this.image_url = img.image_url;
-      this.description = img.description;
-      this.keyword = img.keyword;
-      this.horns = img.horns;
-         gallery.all.push(this);
-  
+$(document).ready(function(){
+
+
+  function Horns(horn){
+    this.name= horn.title;
+    this.imgPath=horn.image_url;
+    this.info = horn.description;
+    this.keyword =horn.keyword;
+    this.horns = horn.horns;
+    Horns.all.push(this);
   }
-  gallery.all=[];
 
-   Gallery.prototype.render = function() {
-          let $imgTemplate = $("#gallery").html();
-          var rendered = Mustache.render($imgTemplate , this);
-          $('section').append(rendered);
- };
-  
-//   }
-//    Gallery.prototype.render = function() {
-//           let $imgClone = $("#gallery").clone();
-//           $imgClone.find("h2").text(this.title);
-//           $imgClone.find("img").attr("src", this.image_url);
-//           $imgClone.find("#p1").text(this.description);
-//           $imgClone.find("#p2").text(this.keyword);
-//           $imgClone.find('#p3').text(this.horns);
-//           // $imgClone.removeClass("img-template");
-//           $imgClone.removeAttr("id");
-//           $imgClone.attr("id", this.title);
-//           $("main section:first").append($imgClone);
-// };
-$( "#but1" ).click(function() {
-  $("div").remove();
-  readJson();
-  
-
-});
-
-$( "#but2" ).click(function() {
-  $("div").remove();
-  readJson2();
-  
-
-});
-// Gallery.prototype.filler = function(){
-//   if(!options.includes(this.keyword)){
-//     options.push(this.keyword);
-//       $('#dropdown').append(`<option>${this.keyword}</option>`);
-//   }else {
-//     console.log('we already have that');
-
-//   }
-// };
-
-
-
-
-        const readJson = () => {
-          $.ajax("data/page-1.json", { method: "GET", dataType: "JSON" }).then(data => {
-            data.forEach(imgItem => {
-              let img = new Gallery(imgItem);
-              img.render();
-              
-            });
-          });
-        };
-        readJson();
-    
-      const readJson2 = () => {
-        $.ajax("data/page-2.json", { method: "GET", dataType: "JSON" }).then(data => {
-          data.forEach(imgItem => {
-            let img = new Gallery(imgItem);
-            img.render();
-          });
-        });
-      };
+  const readJson = (e) => {
+    $.ajax(`./data/page-${e}.json`, { method: 'GET', dataType: 'JSON' }).then(data => {
+      data.forEach(element => {
+        let box = new Horns(element);
+        box.selectOptionFiller();
+        box.render();
+      });
     });
-    //   $( "#gallery" ).select(function() {
-        
-    //     }
-    //   });
-      // {
-      //     "image_url": "https://images.unsplash.com/photo-1514036783265-fba9577fc473?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80",
-      //     "title": "Happy Jackson's Chameleon",
-      //     "description": "These are really common in Hawaii",
-      //     "keyword": "chameleon",
-      //     "horns": 2
-      //   },
+  };
+
+  Horns.all = [];
+  let options =[];
+  readJson(1);
+
+  Horns.prototype.selectOptionFiller = function(){
+    if(!options.includes(this.keyword)){
+      options.push(this.keyword);
+      $('#keyselectors').append(`<option>${this.keyword}</option>`);
+    }else {
+      console.log('we already have that');
+
+    }
+  };
+
+
+  $('#page1').on('click', ()=>{
+    $('#container').empty();
+
+    readJson(1);
+
+  });
+
+  $('#page2').on('click', ()=> {
+    $('#container').empty();
+
+    readJson(2);
+  });
+
+
+
+  Horns.prototype.render = function() {
+    let $box = $('#box').html();
+    var rendered = Mustache.render($box , this);
+    $('#container').append(rendered);
+  };
+
+  let optionsFilter = ()=>{
+    $('#keyselectors').change(function(){
+      $('#container').empty();
+      let selectedValue = this.value;
+      console.log('test',selectedValue);
+
+      filterAfterSelect(selectedValue);
+
+    });
+
+  };
+  let filterAfterSelect = (slectedOp)=>{
+    console.log(slectedOp);
+
+    for (let i = 0; i < Horns.all.length; i++) {
+
+      if(Horns.all[i].keyword === slectedOp){
+        let y = $('body');
+
+        let x = $('<section>');
+        y.append(x);
+        let divE1 = $('<div>');
+
+        x.append(divE1);
+
+        let imgE1 = $('<img>');
+
+        imgE1.attr('src',Horns.all[i].imgPath);
+
+        divE1.append(imgE1);
+
+        let pE1 = $('<p>');
+
+        pE1.text(`${Horns.all[i].name}`);
+
+        divE1.append(pE1);
+
+        let pE2 = $('<p>');
+        pE2.text(`${Horns.all[i].info}`);
+
+        divE1.append(pE2);
+
+      } else{ console.log('hidden divs');
+      }
+    }
+
+
+
+  };
+
+  $('#radioSorting').on('click',(e)=>{
+    // if(!e.target.id==='#radioSorting'){
+    if(e.target.id === 'titleSort'){
+      $('#container').empty();
+      sortDivsBy(Horns.all,'name');
+      Horns.all.forEach((element => {
+        element.render();
+
+      }));
+
+    }else if (e.target.id === 'hornSort') {
+      $('#container').empty();
+      sortDivsBy(Horns.all,'horns');
+      Horns.all.forEach((element => {
+        element.render();
+
+      }));
+    }
+  });
+
+  let sortDivsBy = (array,property)=>{
+    array.sort((a,b)=> {
+
+      let firstItem = a[property];
+      let secondItem = b[property];
+      if (firstItem > secondItem){
+        return 1;
+
+      } else if (secondItem > firstItem) {
+        return -1;
+      } else {return 0;}
+    });
+
+
+  };
+
+  optionsFilter();
+});

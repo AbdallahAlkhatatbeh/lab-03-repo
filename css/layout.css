@@ -1,0 +1,16 @@
+#container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    
+}
+
+#radioSorting {  
+
+display: flex;
+}
+
+#radioSorting input {
+    margin-left: 25px;
+}
