@@ -1,33 +1,24 @@
-#gallery{
-    display: none;
-    border: 10px solid yellow;
-    margin: 15px;
-    background-color: teal;
-  }
-  
-  img {
-    height: 200px;
-  }
-  div {
-    float: left;
-    margin: 86px;
-    border: 100px solid yellow;
-    background-color: teal;
+@import url('https://fonts.googleapis.com/css?family=Spicy+Rice&display=swap');
 
-  }
-  header{
-      text-align: center;
-      margin-bottom: 5px;
-      background-color: tomato;
-      color: #000;
-      font-size: xx-large;
-      height: 80px;
-      line-height: 80px;
-  }
-  nav{
-      text-align: center;
-      margin: 10px;
-  }
-  main{
-      background-color: violet;
-  }
+body{ 
+    font-family: 'Spicy Rice', cursive;
+    
+}
+ h1{
+    margin-left: 40%;
+    font-size: 40px;
+}
+ 
+div{
+    width: 250px;
+    height: 350px;
+     margin: 15px;
+     padding: 15px;
+      border: 1px solid green;
+    
+}
+img{
+    width: 250px;
+    border: 1px solid rgb(24, 184, 224);
+    margin-bottom: 10px;
+}
